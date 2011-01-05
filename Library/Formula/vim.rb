@@ -1,5 +1,8 @@
 require 'formula'
 
+# NOTE installing vim +ruby under rvm, we need to clear rvm environment variables before installing.
+# env -i HOME=/Users/#{user} PATH=/usr/local/bin:/usr/bin:/bin TERM=xterm-color HOMEBREW_TEMP=#{path to ramdisk, if needed.} /usr/local/bin/brew install vim
+
 class Vim <Formula
   # Get stable versions from hg repo instead of downloading an increasing
   # number of separate patches.
