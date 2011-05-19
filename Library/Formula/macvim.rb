@@ -71,7 +71,7 @@ class Macvim < Formula
 
     # Create MacVim vimdiff, view, ex equivalents
     executables = %w[mvimdiff mview mvimex]
-    executables << "vim" if ARGV.include? "--override-system-vim"
+    executables += %w[vi vim vimdiff view vimex] if ARGV.include? "--override-system-vim"
     executables.each {|f| ln_s bin+'mvim', bin+f}
   end
 
@@ -80,9 +80,9 @@ class Macvim < Formula
       #{prefix}
 
     To link the application to a normal Mac OS X location:
-      $ brew linkapps
+        brew linkapps
     or:
-      $ sudo ln -s #{prefix}/MacVim.app /Applications
+        sudo ln -s #{prefix}/MacVim.app /Applications
     EOS
   end
 end
