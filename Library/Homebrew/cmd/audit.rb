@@ -178,6 +178,11 @@ def audit_formula_urls f
 
   urls = [(f.url rescue nil), (f.head rescue nil)].reject {|p| p.nil?}
 
+  f.mirrors.each do |m|
+    mirror = m.values_at :url
+    urls << (mirror.to_s rescue nil)
+  end
+
   # Check SourceForge urls
   urls.each do |p|
     # Is it a filedownload (instead of svnroot)
@@ -187,8 +192,8 @@ def audit_formula_urls f
     # Is it a sourceforge http(s) URL?
     next unless p =~ %r[^https?://.*\bsourceforge\.]
 
-    if p =~ /\?use_mirror=/
-      problems << " * Update this url (don't use ?use_mirror)."
+    if p =~ /(\?|&)use_mirror=/
+      problems << " * Update this url (don't use #{$1}use_mirror)."
     end
 
     if p =~ /\/download$/
