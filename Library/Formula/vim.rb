@@ -6,8 +6,8 @@ require 'formula'
 class Vim <Formula
   # Get stable versions from hg repo instead of downloading an increasing
   # number of separate patches.
-  url 'https://vim.googlecode.com/hg/', :revision => 'fb6b43d55773dae0db9be21c0809f0d3ed98b845'
-  version '7.3.329'
+  url 'https://vim.googlecode.com/hg/', :revision => '379a6398d462d1f4774b31b9ee88cf69ebddbeaf'
+  version '7.3.353'
   homepage 'http://www.vim.org/'
 
   head 'https://vim.googlecode.com/hg/'
