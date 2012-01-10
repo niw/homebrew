@@ -176,3 +176,27 @@ diff --git a/Lib/whichdb.py b/Lib/whichdb.py
 -    if magic == 0x13579ace:
 +    if magic in (0x13579ace, 0x13579acd, 0x13579acf):
          return "gdbm"
+
+
+diff --git a/Modules/posixmodule.c b/Modules/posixmodule.c
+index 48762c1..dc28fd3 100644
+--- a/Modules/posixmodule.c
++++ b/Modules/posixmodule.c
+@@ -457,7 +457,7 @@ _PyVerify_fd_dup2(int fd1, int fd2)
+ #endif
+ 
+ /* Return a dictionary corresponding to the POSIX environment table */
+-#ifdef WITH_NEXT_FRAMEWORK
++#ifdef __APPLE__
+ /* On Darwin/MacOSX a shared library or framework has no access to
+ ** environ directly, we must obtain it with _NSGetEnviron().
+ */
+@@ -479,7 +479,7 @@ convertenviron(void)
+     d = PyDict_New();
+     if (d == NULL)
+         return NULL;
+-#ifdef WITH_NEXT_FRAMEWORK
++#ifdef __APPLE__
+     if (environ == NULL)
+         environ = *_NSGetEnviron();
+ #endif
