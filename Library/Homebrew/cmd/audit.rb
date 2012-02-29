@@ -23,8 +23,10 @@ def audit_formula_text name, text
     problems << " * Check indentation of 'depends_on'."
   end
 
-  # cmake, pkg-config, and scons are build-time deps
-  if text =~ /depends_on ['"](boost-build|cmake|pkg-config|scons|smake)['"]$/
+  # build tools should be flagged properly
+  build_deps = %w{autoconf automake boost-build cmake
+                  imake libtool pkg-config scons smake}
+  if text =~ /depends_on ['"](#{build_deps*'|'})['"]$/
     problems << " * #{$1} dependency should be \"depends_on '#{$1}' => :build\""
   end
 
