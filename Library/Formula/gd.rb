@@ -17,6 +17,7 @@ class Gd < Formula
   depends_on 'jpeg' => :recommended unless build.include? "without-jpeg"
   depends_on 'giflib' if build.include? "with-giflib"
   depends_on :freetype if build.include? "with-freetype" or MacOS::X11.installed?
+  depends_on 'cmake' => :build if ARGV.build_head?
 
   fails_with :llvm do
     build 2326
@@ -24,10 +25,22 @@ class Gd < Formula
   end
 
   def install
-    args = ["--prefix=#{prefix}"]
-    args << "--without-freetype" unless build.include? 'with-freetype'
-    system "./configure", *args
-    system "make install"
+    ENV.x11
+    if ARGV.build_head?
+      mkdir "build" do
+        system "cmake", "..", *std_cmake_args
+        system "make install"
+      end
+    else
+      args = [
+        "--prefix=#{prefix}",
+        "MACOSX_DEPLOYMENT_TARGET=#{MACOS_VERSION}"
+      ]
+      args << "--without-freetype" unless build.include? 'with-freetype'
+      system "./configure", *args
+      system "make install"
+      system "make install"
+    end
     (lib+'pkgconfig/gdlib.pc').write pkg_file
   end
 
@@ -41,7 +54,7 @@ ldflags=  -L/${prefix}/lib
 
 Name: gd
 Description: A graphics library for quick creation of PNG or JPEG images
-Version: 2.0.36RC1
+Version: #{version}
 Requires:
 Libs: -L${libdir} -lgd
 Libs.private: -ljpeg -lpng12 -lz -lm
